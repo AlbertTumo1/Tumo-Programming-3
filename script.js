@@ -9,6 +9,8 @@ const matrix = [];
 const a = 16;
 const b = 16;
 
+// TEST COMMENT!
+
 function Generation(count ,character){
     let p = 0;
     while (p < count) {
