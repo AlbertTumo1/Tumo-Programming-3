@@ -1,0 +1,1 @@
+setTimeout(() => alert(10 + 20), 1000);
