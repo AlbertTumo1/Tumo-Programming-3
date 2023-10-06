@@ -1,41 +1,25 @@
-class GrassEater {
-    constructor(x,y,index) {
-        this.x = x;
-        this.y = y;
+class GrassEater extends LivingCreature {
+    constructor(x, y, index){
+        super(x, y, index);
         this.energy = 8;
-        this.index = index;
-        this.directions = [];
     }
 
-    getNewCoordinates(){
+    getNewCoordinates() {
         this.directions = [
-             [this.x - 1, this.y - 1],
-             [this.x    , this.y - 1],
-             [this.x + 1, this.y - 1],
-             [this.x - 1, this.y    ],
-             [this.x + 1, this.y    ],
-             [this.x - 1, this.y + 1],
-             [this.x    , this.y + 1],
-             [this.x + 1, this.y + 1]
+            [this.x - 1, this.y - 1],
+            [this.x, this.y - 1],
+            [this.x + 1, this.y - 1],
+            [this.x - 1, this.y],
+            [this.x + 1, this.y],
+            [this.x - 1, this.y + 1],
+            [this.x, this.y + 1],
+            [this.x + 1, this.y + 1]
         ];
-     }
-     
+    }
+
     chooseCell(character) {
-        let found = [];
         this.getNewCoordinates();
-
-        for (let i in this.directions) {
-            let x = this.directions[i][0];
-            let y = this.directions[i][1];
-
-            if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length){
-                if (matrix[y][x] == character) {
-                    found.push(this.directions[i]);
-                }
-            }
-        } 
-
-        return found;
+        return super.chooseCell(character);
     }
 
     mul() {
@@ -48,7 +32,7 @@ class GrassEater {
     }
 
     eat() {
-        let foods = this.chooseCell(1)
+        let foods = this.chooseCell(1);
         let food = random(foods)
         if (food) {
             this.energy++;
@@ -64,7 +48,7 @@ class GrassEater {
                     break;
                 }
             }
-            if (this.energy >= 16) {
+            if (this.energy >= 12) {
                 this.mul()
             }
             

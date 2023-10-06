@@ -9,8 +9,6 @@ const matrix = [];
 const a = 16;
 const b = 16;
 
-// TEST COMMENT!
-
 function Generation(count ,character){
     let p = 0;
     while (p < count) {
@@ -36,11 +34,11 @@ function setup() {
     createCanvas(matrix[0].length * side, matrix.length * side);
     background('#acacac');
 
-    Generation(80,1); // grass
-    Generation(12,2); // grass eater
-    Generation(14,3); // predator
-    Generation(2,4); // king eater
-    Generation(9,5); // enemy eater (eats only grassEater and Predator)
+    Generation(90,1); // grass
+    Generation(40,2); // grass eater
+    Generation(15,3); // predator
+    Generation(9,4); // king eater
+    Generation(30,5); // enemy eater (eats only grassEater and Predator)
 
     for(let y = 0; y < matrix.length; ++y){
         for(let x = 0; x < matrix[y].length; ++x){
