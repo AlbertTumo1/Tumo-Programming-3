@@ -1,17 +1,36 @@
+const express = require("express");
+const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server)
+
+app.use(express.static("../client"));
+
+app.get("/", function(req, res){
+   res.redirect("index.html");
+});
+
+
+
+// MY CODE
+
+
+
 const Grass = require("./grass.js");
 const GrassEater = require("./GrassEater.js");
 const KingEater = require("./kingEater.js");
 const Predator = require("./predator.js");
 const EnemyEater = require("./enemyEater.js");
 
+let matrix = [];
+
 const side = 50;
+
 const grassArr = [];
 const grassEaterArr = [];
 const predatorArr = [];
 const kingEaterArr = [];
 const enemyEaterArr = [];
 
-const matrix = [];
 const a = 16;
 const b = 16;
 
@@ -29,9 +48,7 @@ function Generation(count ,character) {
     }
 }
 
-// replaces random(0, a) with Math.floor(Math.random() * a);
-
-function setup() {  
+function fillMatrix() {
     for (let i = 0; i < a; i++) {
         matrix.push([])
 
@@ -39,18 +56,15 @@ function setup() {
             matrix[i].push(0)
         }
     }
-    
-    // frameRate(5);
-    createCanvas(matrix[0].length * side, matrix.length * side);
-    background('#acacac');
 
-    Generation(16,1); // grass
+    // Generation(16,1); // grass
     // Generation(3,2); // grass eater
     // Generation(3,3); // predator
     // Generation(2,4); // king eater
     // Generation(15,5); // enemy eater (eats only grassEater and Predator)
+}
 
-
+function createObjects() {
     for(let y = 0; y < matrix.length; ++y){
         for(let x = 0; x < matrix[y].length; ++x){
             if(matrix[y][x] == 1){
@@ -75,51 +89,39 @@ function setup() {
             }          
         }
     }
-
-    console.log(grassArr.length)
-
 }
 
-function draw() {
-    for (let y = 0; y < matrix.length; y++) {
-        for (let x = 0; x < matrix[y].length; x++) {
-            if (matrix[y][x] == 0) {
-                fill("#acacac");
-            } else if (matrix[y][x] == 1) {
-                fill("green");
-            } else if (matrix[y][x]==2){
-                fill("yellow")
-            } else if (matrix[y][x] == 3) {
-                fill("red");
-            } else if (matrix[y][x] == 4) {
-                fill("black");
-            } else if (matrix[y][x] == 5) {
-                fill("orange");
-            }
-         
-            rect(x * side, y * side, side, side);
-        }
-    }
-    
+function start() {
     for(let i in grassArr){
         grassArr[i].mul();
     }
 
-    // for(let i in grassEaterArr) {
-    //     grassEaterArr[i].eat();   
-    // }
+    for(let i in grassEaterArr) {
+        grassEaterArr[i].eat();   
+    }
 
-    // for(let i in predatorArr) {
-    //     predatorArr[i].eat();   
-    // }
+    for(let i in predatorArr) {
+        predatorArr[i].eat();   
+    }
 
-    // for(let i in kingEaterArr) {
-    //     kingEaterArr[i].eat();   
-    // }
+    for(let i in kingEaterArr) {
+        kingEaterArr[i].eat();   
+    }
 
-    // for(let i in enemyEaterArr) {
-    //     enemyEaterArr[i].eat();   
-    // }
-
-    // console.log(grassEaterArr.length)
+    for(let i in enemyEaterArr) {
+        enemyEaterArr[i].eat();   
+    }
 }
+
+fillMatrix();
+createObjects();
+
+console.log(matrix)
+
+io.on('connection', function (socket) {
+    socket.emit("display_matrix", matrix);
+});
+ 
+server.listen(3000, function(){
+    console.log("Example is running on port 3000, test");
+ });
