@@ -1,0 +1,7 @@
+{
+  "grass": 2,
+  "grassEater": 0,
+  "predator": 0,
+  "kingEater": 161,
+  "enemyEater": 0
+}

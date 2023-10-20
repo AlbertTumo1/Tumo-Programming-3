@@ -1,4 +1,5 @@
 const LivingCreature = require("./LivingCreature.js");
+const random = require("./random.js");
 
 module.exports = class KingEater extends LivingCreature {
     constructor(x, y, index){

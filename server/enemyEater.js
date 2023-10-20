@@ -1,6 +1,7 @@
 const LivingCreature = require("./LivingCreature.js");
+const random = require("./random.js");
 
-class EnemyEater extends LivingCreature {
+module.exports = class EnemyEater extends LivingCreature {
     constructor(x, y, index){
         super(x, y, index);
         this.energy = 8;

@@ -1,0 +1,30 @@
+body {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content:flex-end;
+    gap: 40px;
+}
+
+.Statistics {
+    font-weight: bold;
+}
+
+#grass-count {
+    color:green;
+}
+
+#grassEater-count {
+    color:#fbdc04;
+}
+
+#predator-count {
+    color:red;
+}
+
+#kingEater-count {
+    color:black;
+}
+
+#enemyEater-count {
+    color:orange;
+}
