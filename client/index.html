@@ -6,17 +6,36 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-   <script src="client.js"></script> 
    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
    <title>Document</title>
 </head>
 <body>
    <div class="Statistics">
       <p id="grass-count"></p>
-      <p id="grassEater-count">Grass Eater Count: </p>
-      <p id="predator-count">Predator Count: </p>
-      <p id="kingEater-count">King Eater Count: </p>
-      <p id="enemyEater-count">Enemy Eater Count: </p>
+      <p id="grassEater-count"></p>
+      <p id="predator-count"></p>
+      <p id="kingEater-count"> </p>
+      <p id="enemyEater-count"> </p>
    </div>
+   <div class="weather"> 
+      <div class="weather-box">
+         <img src="photos/hot.png" />
+         <button id="weather-summer">Summer</button> 
+      </div>
+      <div class="weather-box">
+         <img src="photos/cold.png" />
+         <button id="weather-winter">Winter</button> 
+      </div>
+      <div class="weather-box">
+         <img src="photos/autumn.png" />
+         <button id="weather-autumn">Autumn</button> 
+      </div>
+      <div class="weather-box">
+         <img src="photos/spring.png" />
+         <button id="weather-spring">Spring</button> 
+      </div>
+   </div>
+
+   <script src="client.js"></script> 
 </body>
 </html>

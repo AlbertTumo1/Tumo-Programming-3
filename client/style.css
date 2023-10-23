@@ -28,3 +28,19 @@ body {
 #enemyEater-count {
     color:orange;
 }
+
+.weather {
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+
+.weather-box {
+    display: flex;
+    align-items: center;
+}
+
+.weather-box > img {
+    width:60px;
+    object-fit: cover;
+}

@@ -60,7 +60,7 @@ function fillMatrix() {
 
     Generation(60,1); // grass
     Generation(3,2); // grass eater
-    Generation(10,3); // predator
+    Generation(25,3); // predator
     Generation(4,4); // king eater
     Generation(15,5); // enemy eater (eats only grassEater and Predator)
 }
@@ -147,11 +147,9 @@ function Stastistics() {
 
     fs.writeFileSync("Stastics.txt", JSON.stringify(creatures, null, 2), "utf-8");
     let info = fs.readFileSync("Stastics.txt").toString();
-    console.log(info)
+    // console.log(info)
 
     io.sockets.emit("display_statistics", creatures);
-
-
 }
 
 fillMatrix();
@@ -163,7 +161,83 @@ console.log(matrix);
 
 io.on('connection', function (socket) {
     socket.emit("display_matrix", {matrix: matrix, side: side});
+
+    socket.on("change_weather", (weather) => {
+        console.log(weather)
+        if(weather === "winter") {
+            for(let i = 0; i < grassArr.length; i++) {
+                grassArr[i].allowed = false;
+                console.log(grassArr[i])
+                
+                console.log("SUCCESS!")
+            }
+
+            // remove code that makes predator eat grass, make them faster instead
+            if(predatorArr.length > 0) {
+                for(let i = 0; i < predatorArr.length; i++) {
+                    predatorArr[i].eatGrass = true;
+                    console.log("EAT GRASS!!")
+                }
+            }
+           
+        }
+        else if(weather === "summer") {
+            for(let i = 0; i < grassArr.length; i++) {
+                if(grassArr[i].allowed == false) {
+                    grassArr[i].allowed = true;
+                }
+            }
+
+            if(predatorArr.length > 0) {
+                for(let i = 0; i < predatorArr.length; i++) {
+                    predatorArr[i].energy = 20;
+                }
+            }
+
+            if(kingEaterArr.length > 0) {
+                for(let i = 0; i < kingEaterArr.length; i++) {
+                    kingEaterArr[i].energy = 5;
+                }
+            }
+
+            if(enemyEaterArr.length > 0) {
+                for(let i = 0; i < enemyEaterArr.length; i++) {
+                    enemyEaterArr[i].energy = 5;
+                }
+            }
+        }
+        else if(weather === "spring") {
+            for(let i = 0; i < grassArr.length; i++) {
+                if(grassArr[i].allowed == false) {
+                    grassArr[i].allowed = true;
+                }
+            }
+        }
+        else if(weather === "autumn") {
+            for(let i = 0; i < grassArr.length; i++) {
+                if(grassArr[i].allowed == false) {
+                    grassArr[i].allowed = true;
+                }
+            }
+        }
+    })
 });
+
+// for(let i in grassEaterArr) {
+//     grassEaterArr[i].eat();   
+// }
+
+// for(let i in predatorArr) {
+//     predatorArr[i].eat();   
+// }
+
+// for(let i in kingEaterArr) {
+//     kingEaterArr[i].eat();   
+// }
+
+// for(let i in enemyEaterArr) {
+//     enemyEaterArr[i].eat();   
+// }
  
 server.listen(3000, function(){
     console.log("Example is running on port 3000, test");

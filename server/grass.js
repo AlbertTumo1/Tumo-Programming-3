@@ -5,6 +5,7 @@ module.exports = class Grass extends LivingCreature {
     constructor(x, y, index){
         super(x, y, index);
         this.energy = 8;
+        this.allowed = true;
     }
 
     getNewCoordinates() {
@@ -30,7 +31,7 @@ module.exports = class Grass extends LivingCreature {
         let newCell = random(this.chooseCell(0));
 
         // console.log(newCell, this.multiply);
-        if (this.multiply >= 3 && newCell) {
+        if (this.multiply >= 3 && newCell && this.allowed) {
             let newGrass = new Grass(newCell[0], newCell[1], this.index);
             grassArr.push(newGrass);
             matrix[newCell[1]][newCell[0]] = 1;
