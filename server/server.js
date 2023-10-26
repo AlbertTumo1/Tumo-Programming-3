@@ -11,7 +11,6 @@ app.get("/", function(req, res){
 });
 
 
-
 // MY CODE
 
 // IMPORTANT TASKS: Statstics, Weather, Unique Events
@@ -30,6 +29,8 @@ predatorArr = [];
 kingEaterArr = [];
 enemyEaterArr = [];
 
+realWeather = null;
+
 const a = 16;
 const b = 16;
 
@@ -42,7 +43,7 @@ function Generation(count ,character) {
         let l = Math.floor(Math.random() * b);
         console.log(k, l)
         if(matrix[k][l] == 0){
-            matrix[k][l] = character
+            matrix[k][l] = character;
         }
 
         p++;
@@ -59,7 +60,7 @@ function fillMatrix() {
     }
 
     Generation(60,1); // grass
-    Generation(3,2); // grass eater
+    Generation(30,2); // grass eater
     Generation(25,3); // predator
     Generation(4,4); // king eater
     Generation(15,5); // enemy eater (eats only grassEater and Predator)
@@ -68,23 +69,23 @@ function fillMatrix() {
 function createObjects() {
     for(let y = 0; y < matrix.length; ++y){
         for(let x = 0; x < matrix[y].length; ++x){
-            if(matrix[y][x] == 1){
+            if(matrix[y][x] == 1 && !realWeather){
                 let grass = new Grass(x,y,1);
                 grassArr.push(grass);
             }
-            else if(matrix[y][x] == 2){
+            else if(matrix[y][x] == 2 && !realWeather){
                 let grassEater = new GrassEater(x,y,2)
                 grassEaterArr.push(grassEater)
             } 
-            else if(matrix[y][x] == 3){
+            else if(matrix[y][x] == 3 && !realWeather){
                 let predator = new Predator(x,y,3)
                 predatorArr.push(predator);
             }  
-            else if(matrix[y][x] == 4){
+            else if(matrix[y][x] == 4 && !realWeather){
                 let kingEater = new KingEater(x,y,4);
                 kingEaterArr.push(kingEater);
             }  
-            else if(matrix[y][x] == 5){
+            else if(matrix[y][x] == 5 && !realWeather){
                 let enemyEater = new EnemyEater(x,y,5);
                 enemyEaterArr.push(enemyEater);
             }          
@@ -101,16 +102,56 @@ function start() {
         grassEaterArr[i].eat();   
     }
 
-    for(let i in predatorArr) {
-        predatorArr[i].eat();   
+
+    if(realWeather == "winter") {
+        setInterval(() => {
+            for(let i in predatorArr) {
+                predatorArr[i].eat();   
+            }
+        }, 3000);
+    } else {
+        for(let i in predatorArr) {
+            predatorArr[i].eat();   
+        }
+    }
+   
+    if(!realWeather) {
+        for(let i in kingEaterArr) {
+            kingEaterArr[i].eat();   
+        }
+    } else if(realWeather == "winter") {
+        console.log("WINTER!");
+        setInterval(() => {
+            for(let i in kingEaterArr) {
+                kingEaterArr[i].eat();   
+            }
+        }, 5000);
+    } else if(realWeather == "spring") {
+        console.log("WINTER!");
+        setInterval(() => {
+            for(let i in kingEaterArr) {
+                kingEaterArr[i].eat();   
+            }
+        }, 3000);
+    } else if(realWeather == "autumn") {
+        console.log("WINTER!");
+        setInterval(() => {
+            for(let i in kingEaterArr) {
+                kingEaterArr[i].eat();   
+            }
+        }, 1500);
     }
 
-    for(let i in kingEaterArr) {
-        kingEaterArr[i].eat();   
-    }
-
-    for(let i in enemyEaterArr) {
-        enemyEaterArr[i].eat();   
+    if(realWeather == "winter") {
+        setInterval(() => {
+            for(let i in enemyEaterArr) {
+                enemyEaterArr[i].eat();   
+            }
+        }, 3000);
+    } else {
+        for(let i in enemyEaterArr) {
+            enemyEaterArr[i].eat();   
+        }
     }
 
     io.sockets.emit("display_matrix", {matrix: matrix, side: side});
@@ -165,23 +206,19 @@ io.on('connection', function (socket) {
     socket.on("change_weather", (weather) => {
         console.log(weather)
         if(weather === "winter") {
+            realWeather = "winter";
+
             for(let i = 0; i < grassArr.length; i++) {
                 grassArr[i].allowed = false;
                 console.log(grassArr[i])
                 
                 console.log("SUCCESS!")
             }
-
-            // remove code that makes predator eat grass, make them faster instead
-            if(predatorArr.length > 0) {
-                for(let i = 0; i < predatorArr.length; i++) {
-                    predatorArr[i].eatGrass = true;
-                    console.log("EAT GRASS!!")
-                }
-            }
            
         }
         else if(weather === "summer") {
+            realWeather = "summer";
+
             for(let i = 0; i < grassArr.length; i++) {
                 if(grassArr[i].allowed == false) {
                     grassArr[i].allowed = true;
@@ -207,6 +244,8 @@ io.on('connection', function (socket) {
             }
         }
         else if(weather === "spring") {
+            realWeather = "spring";
+
             for(let i = 0; i < grassArr.length; i++) {
                 if(grassArr[i].allowed == false) {
                     grassArr[i].allowed = true;
@@ -214,6 +253,8 @@ io.on('connection', function (socket) {
             }
         }
         else if(weather === "autumn") {
+            realWeather = "autumn";
+
             for(let i = 0; i < grassArr.length; i++) {
                 if(grassArr[i].allowed == false) {
                     grassArr[i].allowed = true;
@@ -223,22 +264,6 @@ io.on('connection', function (socket) {
     })
 });
 
-// for(let i in grassEaterArr) {
-//     grassEaterArr[i].eat();   
-// }
-
-// for(let i in predatorArr) {
-//     predatorArr[i].eat();   
-// }
-
-// for(let i in kingEaterArr) {
-//     kingEaterArr[i].eat();   
-// }
-
-// for(let i in enemyEaterArr) {
-//     enemyEaterArr[i].eat();   
-// }
- 
 server.listen(3000, function(){
     console.log("Example is running on port 3000, test");
 });
@@ -266,6 +291,6 @@ Weather Winter
     Grass: Changes Color to a little white / Stops Spreading
     Grass Eater: Becomes darker and starts spreading faster
     Predator: Becomes much faster and changes color to a little darker red
-    King Eater: Also changes color but becomes faster
+    King Eater: Also changes color but becomes slower
     Enemy Eater: Becomes Slower
 */

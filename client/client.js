@@ -28,26 +28,55 @@ function myDraw(matrix, side) {
             } else if (matrix[y][x] == 1 && colorWeather !== "winter") {
                 fill("green");
             } else if (matrix[y][x] == 2 && colorWeather !== "winter"){
-                fill("#fbdc04")
+                fill("yellow") // yellow
             } else if (matrix[y][x] == 3 && colorWeather !== "winter") {
                 fill("red");
             } else if (matrix[y][x] == 4 && colorWeather !== "winter") {
-                fill("black");
-            } else if (matrix[y][x] == 5) {
-                fill("orange");
+                fill("#898383");
+            } else if (matrix[y][x] == 5 && colorWeather !== "winter") {
+                fill("blue");
             }
+
+            // winter
+            
             else if (matrix[y][x] == 1 && colorWeather == "winter") {
+                console.log("HELLO WINTA")
                 fill("F5F5F5");
             }    
             else if (matrix[y][x] == 2 && colorWeather == "winter") {
-                fill("#ffe505");
+                fill("#fff9ae");
             }   
             else if (matrix[y][x] == 3 && colorWeather == "winter") {
-                fill("#560d0d");
+                fill("#ff7b7b");
             }     
             else if (matrix[y][x] == 4 && colorWeather == "winter") {
                 fill("#2d2d2d");
-            }      
+            }   
+            else if (matrix[y][x] == 5 && colorWeather == "winter") {
+                fill("#4169e1");
+            }
+            
+            if (matrix[y][x] == 1 && colorWeather == "autumn") {
+                console.log("HELLO AUTMN")
+                fill("#d6d6d6");
+            }    
+            if (matrix[y][x] == 2 && colorWeather == "autumn") {
+                fill("#f8ed62");
+            }   
+            if (matrix[y][x] == 3 && colorWeather == "autumn") {
+                fill("#ff7b7b");
+            }     
+            if (matrix[y][x] == 4 && colorWeather == "autumn") {
+                fill("#635b5b");
+            }   
+            if (matrix[y][x] == 5 && colorWeather == "autumn") {
+                fill("#4169e1");
+            }  
+
+            else if (matrix[y][x] == 5 && colorWeather == "spring") {
+                fill("#0092ff");
+            }
+
             rect(x * side, y * side, side, side);
             console.log(colorWeather)
         }
