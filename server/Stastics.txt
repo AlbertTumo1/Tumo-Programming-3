@@ -1,7 +1,7 @@
 {
-  "grass": 2,
+  "grass": 11,
   "grassEater": 0,
   "predator": 0,
-  "kingEater": 129,
+  "kingEater": 0,
   "enemyEater": 0
 }

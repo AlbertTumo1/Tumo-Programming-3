@@ -3,17 +3,27 @@
 const socket = io();
 
 let board;
-let colorWeather;
+let colorWeather = "summer";
+
+console.log(colorWeather);
 
 let winterBtn = document.getElementById("weather-winter");
 let sprintBtn = document.getElementById("weather-spring");
 let summerBtn = document.getElementById("weather-summer");
 let autumnBtn = document.getElementById("weather-autumn");
 
+let eventRadiation = document.getElementById("event-radiation");
+let eventVirus = document.getElementById("event-virus");
+let eventRain = document.getElementById("event-rain");
+
 winterBtn.addEventListener("click", () => handleWeatherChange("winter"));
 sprintBtn.addEventListener("click", () => handleWeatherChange("spring"));
 summerBtn.addEventListener("click", () => handleWeatherChange("summer"));
 autumnBtn.addEventListener("click", () => handleWeatherChange("autumn"));
+
+eventRadiation.addEventListener("click", () => handleEventChange("radiation"));
+eventVirus.addEventListener("click", () => handleEventChange("virus"));
+eventRain.addEventListener("click", () => handleEventChange("rain"));
 
 function setup() {  
     createCanvas(16 * 50, 16 * 50);
@@ -96,6 +106,10 @@ function handleWeatherChange(weather) {
     socket.emit("change_weather", weather);
 }
 
+function handleEventChange(event) {
+    socket.emit("change_event", event);
+}
+
 function getStats(creatures) {
     let grassCount = document.getElementById("grass-count");
     let grassEaterCount = document.getElementById("grassEater-count");
@@ -109,4 +123,10 @@ function getStats(creatures) {
     kingEaterCount.textContent = `King Eater Count: ${creatures.kingEater}`;
     enemyEaterCount.textContent = `Enemy Eater Count: ${creatures.enemyEater}`;
     console.log(creatures)
+}
+
+socket.on("get_weather", (realWeather) => colorWeather = realWeather);
+
+window.onload = function() {
+    socket.emit("get_weather");
 }

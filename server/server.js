@@ -30,18 +30,19 @@ kingEaterArr = [];
 enemyEaterArr = [];
 
 realWeather = null;
+realEvent = null;
 
 const a = 16;
 const b = 16;
 
 side = 50;
+var id;
 
 function Generation(count ,character) {
     let p = 0;
     while (p < count) {
         let k = Math.floor(Math.random() * a);
         let l = Math.floor(Math.random() * b);
-        console.log(k, l)
         if(matrix[k][l] == 0){
             matrix[k][l] = character;
         }
@@ -102,9 +103,9 @@ function start() {
         grassEaterArr[i].eat();   
     }
 
-
     if(realWeather == "winter") {
-        setInterval(() => {
+        id = setInterval(() => {
+            console.log("PREDATOR INTERVAL")
             for(let i in predatorArr) {
                 predatorArr[i].eat();   
             }
@@ -113,6 +114,9 @@ function start() {
         for(let i in predatorArr) {
             predatorArr[i].eat();   
         }
+        if(id) {
+            clearInterval(id);
+        }
     }
    
     if(!realWeather) {
@@ -120,22 +124,22 @@ function start() {
             kingEaterArr[i].eat();   
         }
     } else if(realWeather == "winter") {
-        console.log("WINTER!");
-        setInterval(() => {
+        clearInterval(id)
+        id = setInterval(() => {
             for(let i in kingEaterArr) {
                 kingEaterArr[i].eat();   
             }
         }, 5000);
     } else if(realWeather == "spring") {
-        console.log("WINTER!");
-        setInterval(() => {
+        clearInterval(id)
+        id = setInterval(() => {
             for(let i in kingEaterArr) {
                 kingEaterArr[i].eat();   
             }
         }, 3000);
     } else if(realWeather == "autumn") {
-        console.log("WINTER!");
-        setInterval(() => {
+        clearInterval(id)
+       id =  setInterval(() => {
             for(let i in kingEaterArr) {
                 kingEaterArr[i].eat();   
             }
@@ -143,12 +147,13 @@ function start() {
     }
 
     if(realWeather == "winter") {
-        setInterval(() => {
+       id = setInterval(() => {
             for(let i in enemyEaterArr) {
                 enemyEaterArr[i].eat();   
             }
         }, 3000);
     } else {
+        clearInterval(id)
         for(let i in enemyEaterArr) {
             enemyEaterArr[i].eat();   
         }
@@ -188,7 +193,6 @@ function Stastistics() {
 
     fs.writeFileSync("Stastics.txt", JSON.stringify(creatures, null, 2), "utf-8");
     let info = fs.readFileSync("Stastics.txt").toString();
-    // console.log(info)
 
     io.sockets.emit("display_statistics", creatures);
 }
@@ -198,21 +202,31 @@ createObjects();
 setInterval(start, 1000);
 setInterval(Stastistics, 1000);
 
-console.log(matrix);
-
 io.on('connection', function (socket) {
     socket.emit("display_matrix", {matrix: matrix, side: side});
 
+    socket.on("get_weather", () => {
+        socket.emit("get_weather", realWeather);
+    })
+
+    socket.on("change_event", (event) => {
+        realEvent = event;
+
+        if(event === "radiation") {
+            console.log("RADIATION")
+            for(let i = 0; i < grassArr.length; i++) {
+                grassArr[i].allowed = false;
+            }
+        }
+    })
+
     socket.on("change_weather", (weather) => {
-        console.log(weather)
         if(weather === "winter") {
             realWeather = "winter";
 
             for(let i = 0; i < grassArr.length; i++) {
                 grassArr[i].allowed = false;
-                console.log(grassArr[i])
                 
-                console.log("SUCCESS!")
             }
            
         }
@@ -263,6 +277,10 @@ io.on('connection', function (socket) {
         }
     })
 });
+
+function SpecialEvents() {
+
+}
 
 server.listen(3000, function(){
     console.log("Example is running on port 3000, test");
