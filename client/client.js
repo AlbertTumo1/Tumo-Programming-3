@@ -88,7 +88,6 @@ function myDraw(matrix, side) {
             }
 
             rect(x * side, y * side, side, side);
-            console.log(colorWeather)
         }
     }
 }

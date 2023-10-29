@@ -13,7 +13,7 @@ app.get("/", function(req, res){
 
 // MY CODE
 
-// IMPORTANT TASKS: Unique Events
+// IMPORTANT TASKS: Statstics, Weather, Unique Events
 
 const Grass = require("./grass.js");
 const GrassEater = require("./GrassEater.js");
@@ -63,31 +63,30 @@ function fillMatrix() {
     Generation(60,1); // grass
     Generation(30,2); // grass eater
     Generation(25,3); // predator
-    Generation(15,4); // king eater
+    Generation(4,4); // king eater
     Generation(15,5); // enemy eater (eats only grassEater and Predator)
 }
 
 function createObjects() {
     for(let y = 0; y < matrix.length; ++y){
         for(let x = 0; x < matrix[y].length; ++x){
-            if(matrix[y][x] == 1){
-                console.log("GENERATED NEW GRASS")
+            if(matrix[y][x] == 1 && !realWeather){
                 let grass = new Grass(x,y,1);
                 grassArr.push(grass);
             }
-            else if(matrix[y][x] == 2){
+            else if(matrix[y][x] == 2 && !realWeather){
                 let grassEater = new GrassEater(x,y,2)
                 grassEaterArr.push(grassEater)
             } 
-            else if(matrix[y][x] == 3){
+            else if(matrix[y][x] == 3 && !realWeather){
                 let predator = new Predator(x,y,3)
                 predatorArr.push(predator);
             }  
-            else if(matrix[y][x] == 4){
+            else if(matrix[y][x] == 4 && !realWeather){
                 let kingEater = new KingEater(x,y,4);
                 kingEaterArr.push(kingEater);
             }  
-            else if(matrix[y][x] == 5){
+            else if(matrix[y][x] == 5 && !realWeather){
                 let enemyEater = new EnemyEater(x,y,5);
                 enemyEaterArr.push(enemyEater);
             }          
@@ -210,34 +209,16 @@ io.on('connection', function (socket) {
         socket.emit("get_weather", realWeather);
     })
 
-    // socket.on("change_event", (event) => {
-    //     realEvent = event;
+    socket.on("change_event", (event) => {
+        realEvent = event;
 
-    //     if(event !== "radiation") {
-    //         for(let i = 0; i < grassArr.length; i++) {
-    //             grassArr[i].allowed = true;
-    //         }
-    //     }
-
-    //     if(event === "radiation") {
-    //         console.log("RADIATION")
-    //         for(let i = 0; i < grassArr.length; i++) {
-    //             grassArr[i].allowed = false;
-    //         }
-    //         Generation(5,4); // king eater
-    //     } else if(event === "virus") {
-    //         console.log("VIRUS!!!")
-    //         // Grass Eater, King Eater
-    //         kingEaterArr.length = 0;
-    //         grassEaterArr.length = 0;
-    //         Generation(20,1);
-    //     } else if(event === "rain") {
-    //         Generation(30,2); // grass eater
-    //         Generation(25,3); // predator
-    //         Generation(20,5);
-    //         kingEaterArr.length = 0;
-    //     }
-// })
+        if(event === "radiation") {
+            console.log("RADIATION")
+            for(let i = 0; i < grassArr.length; i++) {
+                grassArr[i].allowed = false;
+            }
+        }
+    })
 
     socket.on("change_weather", (weather) => {
         if(weather === "winter") {
@@ -247,6 +228,7 @@ io.on('connection', function (socket) {
                 grassArr[i].allowed = false;
                 
             }
+           
         }
         else if(weather === "summer") {
             realWeather = "summer";
@@ -296,6 +278,10 @@ io.on('connection', function (socket) {
     })
 });
 
+function SpecialEvents() {
+
+}
+
 server.listen(3000, function(){
     console.log("Example is running on port 3000, test");
 });
@@ -326,33 +312,3 @@ Weather Winter
     King Eater: Also changes color but becomes slower
     Enemy Eater: Becomes Slower
 */
-
-
-// socket.on("change_event", (event) => {
-//     realEvent = event;
-
-//     if(event !== "radiation") {
-//         for(let i = 0; i < grassArr.length; i++) {
-//             grassArr[i].allowed = true;
-//         }
-//     }
-
-//     if(event === "radiation") {
-//         console.log("RADIATION")
-//         for(let i = 0; i < grassArr.length; i++) {
-//             grassArr[i].allowed = false;
-//         }
-//         Generation(5,4); // king eater
-//     } else if(event === "virus") {
-//         console.log("VIRUS!!!")
-//         // Grass Eater, King Eater
-//         kingEaterArr.length = 0;
-//         grassEaterArr.length = 0;
-//         Generation(20,1);
-//     } else if(event === "rain") {
-//         Generation(30,2); // grass eater
-//         Generation(25,3); // predator
-//         Generation(20,5);
-//         kingEaterArr.length = 0;
-//     }
-// })
