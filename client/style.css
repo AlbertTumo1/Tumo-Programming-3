@@ -5,6 +5,18 @@ body {
     gap: 40px;
 }
 
+.everything {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-info {
+    display: flex;
+    align-items: center;
+    gap:50px;
+    flex-direction: row-reverse;
+}
+
 .Statistics {
     font-weight: bold;
 }

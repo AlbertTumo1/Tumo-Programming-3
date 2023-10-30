@@ -37,6 +37,21 @@ module.exports = class Grass extends LivingCreature {
             matrix[newCell[1]][newCell[0]] = 1;
             this.multiply = 0;  
         }
+
+        if (this.energy <= 1) {
+            this.die();
+        }
+    }
+
+    die() {
+        for (let i in grassArr) {
+            if (this.x == grassArr[i].x && this.y == grassArr[i].y) {
+                grassArr.splice(i, 1);
+                break;
+            }
+        }
+
+        matrix[this.y][this.x] = 0;
     }
 }
 

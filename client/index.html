@@ -10,41 +10,52 @@
    <title>Document</title>
 </head>
 <body>
-   <div class="Statistics">
-      <p id="grass-count"></p>
-      <p id="grassEater-count"></p>
-      <p id="predator-count"></p>
-      <p id="kingEater-count"> </p>
-      <p id="enemyEater-count"> </p>
+   <div class="everything">
+      <div class="top-info">
+         <div class="Statistics">
+            <p id="grass-count"></p>
+            <p id="grassEater-count"></p>
+            <p id="predator-count"></p>
+            <p id="kingEater-count"> </p>
+            <p id="enemyEater-count"> </p>
+         </div>
+         
+         <div class="events"> 
+            <button id="event-radiation">Radiation</button>  
+            <button id="event-virus">Virus</button> 
+            <button id="event-hunger">Hunger</button> 
+            <button id="event-predator">Predator Spawner</button> 
+         </div>
+         
+         <div class="weather"> 
+            <div class="weather-box">
+               <img src="photos/hot.png" />
+               <button id="weather-summer">Summer</button> 
+            </div>
+            <div class="weather-box">
+               <img src="photos/cold.png" />
+               <button id="weather-winter">Winter</button> 
+            </div>
+            <div class="weather-box">
+               <img src="photos/autumn.png" />
+               <button id="weather-autumn">Autumn</button> 
+            </div>
+            <div class="weather-box">
+               <img src="photos/spring.png" />
+               <button id="weather-spring">Spring</button> 
+            </div>
+         </div>
+      </div>
+      
+
+      <div class="bottom-info">
+         <p>Radiation: Grass stops spreading and grass eaters spawn to eat the grass</p>
+         <p>Virus: KingEaters and GrassEaters die because they both eat grass.</p>
+         <p>Hunger: King Eaters and Enemy Eaters arise to eat everything</p>
+         <p>Predator Spawner: Spawns in predators as they usually die quickly on their own</p>
+      </div>
    </div>
-
-   <div class="events"> 
-      <button id="event-radiation">Radiation: Grass stops spreading and dies</button>  
-      <button id="event-virus">Covid-19: Everyone but grass dies</button> 
-      <button id="event-rain">Rain: Grass Grows / EnemyEaters spawn and start growing</button> 
-   </div>
-
-   <div class="weather"> 
-      <div class="weather-box">
-         <img src="photos/hot.png" />
-         <button id="weather-summer">Summer</button> 
-      </div>
-      <div class="weather-box">
-         <img src="photos/cold.png" />
-         <button id="weather-winter">Winter</button> 
-      </div>
-      <div class="weather-box">
-         <img src="photos/autumn.png" />
-         <button id="weather-autumn">Autumn</button> 
-      </div>
-      <div class="weather-box">
-         <img src="photos/spring.png" />
-         <button id="weather-spring">Spring</button> 
-      </div>
-   </div>
-
-  
-
+   
    <script src="client.js"></script> 
 </body>
 </html>
