@@ -14,7 +14,8 @@ let autumnBtn = document.getElementById("weather-autumn");
 
 let eventRadiation = document.getElementById("event-radiation");
 let eventVirus = document.getElementById("event-virus");
-let eventRain = document.getElementById("event-rain");
+let eventHunger = document.getElementById("event-hunger");
+let eventPredator = document.getElementById("event-predator");
 
 winterBtn.addEventListener("click", () => handleWeatherChange("winter"));
 sprintBtn.addEventListener("click", () => handleWeatherChange("spring"));
@@ -23,7 +24,8 @@ autumnBtn.addEventListener("click", () => handleWeatherChange("autumn"));
 
 eventRadiation.addEventListener("click", () => handleEventChange("radiation"));
 eventVirus.addEventListener("click", () => handleEventChange("virus"));
-eventRain.addEventListener("click", () => handleEventChange("rain"));
+eventHunger.addEventListener("click", () => handleEventChange("hunger"));
+eventPredator.addEventListener("click", () => handleEventChange("predator_spawner"));
 
 function setup() {  
     createCanvas(16 * 50, 16 * 50);
@@ -106,6 +108,9 @@ function handleWeatherChange(weather) {
 }
 
 function handleEventChange(event) {
+    if(event === "virus") {
+        console.log("VIRUS CLIENT")
+    }
     socket.emit("change_event", event);
 }
 
@@ -129,3 +134,4 @@ socket.on("get_weather", (realWeather) => colorWeather = realWeather);
 window.onload = function() {
     socket.emit("get_weather");
 }
+
